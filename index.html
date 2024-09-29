@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Random Joke Generator</title>
+  <style>
+    
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+
+
+    #getJokeBtn {
+      background-color: #4CAF50; 
+      color: white; 
+      padding: 15px 32px; 
+      text-align: center; 
+      font-size: 16px; 
+      margin: 10px 0; 
+      border: none; 
+      border-radius: 8px; 
+      cursor: pointer; 
+    }
+
+   
+    #getJokeBtn:hover {
+      background-color: #45a049;
+    }
+
+   
+    #jokeDisplay {
+      font-size: 18px;
+      margin-top: 20px;
+      text-align: center;
+      width: 80%;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Random Joke Generator</h1>
+  <button id="getJokeBtn">Generate Random Joke</button>
+  <div id="jokeDisplay"></div>
+
+  <script>
+   
+    const getJoke = async () => {
+      const url = 'https://official-joke-api.appspot.com/random_joke';
+
+      try {
+        const response = await fetch(url); 
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json(); 
+        return data; 
+      } catch (error) {
+        console.error('Fetch error:', error);
+        throw error;
+      }
+    };
+
+    
+    const getJokeBtn = document.getElementById('getJokeBtn');
+    const jokeDisplay = document.getElementById('jokeDisplay');
+
+   
+    getJokeBtn.addEventListener('click', async () => {
+      try {
+       
+        const jokeData = await getJoke();
+
+        
+        jokeDisplay.innerHTML = `<p><strong>${jokeData.setup}</strong></p><p>${jokeData.punchline}</p>`;
+      } catch (error) {
+        jokeDisplay.textContent = 'Something went wrong. Please try again.';
+        console.error(error);
+      }
+    });
+  </script>
+
+</body>
+</html>
